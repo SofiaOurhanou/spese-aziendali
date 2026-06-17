@@ -1,0 +1,78 @@
+/**
+ * Questo file è lo schema Prisma che definisce il modello dati PostgreSQL dell'intera applicazione di
+ * gestione rimborsi spese aziendali, traducendo i requisiti della prova in tabelle e relazioni. Gli
+ * enum Ruolo e StatoRichiesta codificano i due tipi di utente e i quattro stati del workflow
+ * (IN_ATTESA → APPROVATA/RIFIUTATA → LIQUIDATA). Utente memorizza password hashata; RichiestaRimborso
+ * lega un dipendente, una categoria, importo Decimal(10,2), date di spesa/inserimento/valutazione/
+ * liquidazione e opzionalmente il responsabile che ha valutato e la motivazione di rifiuto. Le relazioni
+ * self su Utente separano "richieste presentate" da "richieste valutate". Il generator output in
+ * app/generated/prisma segue la convenzione Prisma 7; il datasource punta a PostgreSQL (es. Supabase).
+ */
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// I due ruoli previsti dalla traccia d'esame
+enum Ruolo {
+  DIPENDENTE
+  RESPONSABILE_AMMINISTRATIVO
+}
+
+// Gli stati possibili di una richiesta di rimborso
+enum StatoRichiesta {
+  IN_ATTESA
+  APPROVATA
+  RIFIUTATA
+  LIQUIDATA
+}
+
+// Tabella utenti - dipendenti e responsabili amministrativi
+model Utente {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  cognome   String
+  email     String   @unique
+  password  String   // salviamo solo l'hash, mai la password in chiaro
+  ruolo     Ruolo    @default(DIPENDENTE)
+  createdAt DateTime @default(now())
+
+  // relazioni: un dipendente ha molte richieste, un admin può valutarne molte
+  richiesteComeDipendente RichiestaRimborso[] @relation("DipendenteRichieste")
+  richiesteValutate       RichiestaRimborso[] @relation("ResponsabileValutazioni")
+}
+
+// Categorie di spesa (Trasferta, Pasti, ecc.)
+model CategoriaSpesa {
+  id          Int                 @id @default(autoincrement())
+  descrizione String              @unique
+  richieste   RichiestaRimborso[]
+}
+
+// Richiesta di rimborso spese presentata da un dipendente
+model RichiestaRimborso {
+  id                      Int            @id @default(autoincrement())
+  dataInserimento         DateTime       @default(now())
+  dataSpesa               DateTime
+  importo                 Decimal        @db.Decimal(10, 2)
+  descrizione             String
+  riferimentoGiustificativo String?
+  stato                   StatoRichiesta @default(IN_ATTESA)
+
+  dipendenteId Int
+  dipendente   Utente @relation("DipendenteRichieste", fields: [dipendenteId], references: [id])
+
+  categoriaId Int
+  categoria   CategoriaSpesa @relation(fields: [categoriaId], references: [id])
+
+  dataValutazione           DateTime?
+  responsabileValutazioneId Int?
+  responsabileValutazione   Utente?   @relation("ResponsabileValutazioni", fields: [responsabileValutazioneId], references: [id])
+  motivazioneRifiuto        String?
+  dataLiquidazione          DateTime?
+}

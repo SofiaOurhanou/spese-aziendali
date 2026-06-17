@@ -1,0 +1,402 @@
+/**
+ * Questo file definisce il design system visivo "brutalist" dell'applicazione tramite Tailwind CSS v4:
+ * variabili CSS in :root per palette rosa/marrone, bordi spessi, ombre offset e tipografia monospace.
+ * @theme inline espone quei colori come utility Tailwind (bg-brutal-bg, text-brutal-muted, ecc.) usate
+ * in tutte le pagine e componenti. Le classi componenti (.brutal-card, .brutal-btn, .brutal-table, badge
+ * per stati rimborso, alert per errori) centralizzano lo stile invece di ripetere utility in ogni JSX,
+ * garantendo coerenza tra dashboard, form auth, tabelle rimborsi e Swagger. @import tailwindcss attiva il
+ * nuovo engine Tailwind 4; il look distintivo serve a differenziare visivamente la prova rispetto a UI generiche.
+ */
+
+@import "tailwindcss";
+
+:root {
+  --brutal-bg: #fdf0f5;
+  --brutal-surface: #fffafc;
+  --brutal-surface-alt: #fce4ef;
+  --brutal-border: #2d1b24;
+  --brutal-text: #2d1b24;
+  --brutal-muted: #6b4a58;
+  --brutal-accent: #e84a8a;
+  --brutal-accent-dark: #c7366f;
+  --brutal-accent-light: #f9d4e4;
+  --brutal-shadow: #2d1b24;
+  --brutal-success: #2d6a4f;
+  --brutal-success-bg: #d8f3dc;
+  --brutal-error: #9b2226;
+  --brutal-error-bg: #ffd6d6;
+  --brutal-warning: #774d00;
+  --brutal-warning-bg: #fff3cd;
+  --brutal-info: #5c2d6e;
+  --brutal-info-bg: #e8d5f0;
+}
+
+@theme inline {
+  --color-brutal-bg: var(--brutal-bg);
+  --color-brutal-surface: var(--brutal-surface);
+  --color-brutal-surface-alt: var(--brutal-surface-alt);
+  --color-brutal-border: var(--brutal-border);
+  --color-brutal-text: var(--brutal-text);
+  --color-brutal-muted: var(--brutal-muted);
+  --color-brutal-accent: var(--brutal-accent);
+  --color-brutal-accent-dark: var(--brutal-accent-dark);
+  --color-brutal-accent-light: var(--brutal-accent-light);
+  --color-brutal-success: var(--brutal-success);
+  --color-brutal-success-bg: var(--brutal-success-bg);
+  --color-brutal-error: var(--brutal-error);
+  --color-brutal-error-bg: var(--brutal-error-bg);
+  --color-brutal-warning: var(--brutal-warning);
+  --color-brutal-warning-bg: var(--brutal-warning-bg);
+  --color-brutal-info: var(--brutal-info);
+  --color-brutal-info-bg: var(--brutal-info-bg);
+  --font-sans: var(--font-space-mono);
+  --font-display: var(--font-syne);
+  --shadow-brutal: 4px 4px 0 var(--brutal-shadow);
+  --shadow-brutal-sm: 2px 2px 0 var(--brutal-shadow);
+  --shadow-brutal-lg: 6px 6px 0 var(--brutal-shadow);
+}
+
+body {
+  background: var(--brutal-bg);
+  color: var(--brutal-text);
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+}
+
+/* ── Typography ── */
+.brutal-title {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--brutal-text);
+}
+
+.brutal-subtitle {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
+  color: var(--brutal-text);
+}
+
+/* ── Surfaces ── */
+.brutal-card {
+  background: var(--brutal-surface);
+  border: 3px solid var(--brutal-border);
+  box-shadow: var(--shadow-brutal);
+}
+
+.brutal-card-hover {
+  background: var(--brutal-surface);
+  border: 3px solid var(--brutal-border);
+  box-shadow: var(--shadow-brutal);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.brutal-card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--brutal-shadow);
+}
+
+.brutal-panel {
+  background: var(--brutal-surface-alt);
+  border: 2px solid var(--brutal-border);
+}
+
+/* ── Buttons ── */
+.brutal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--brutal-accent);
+  color: white;
+  border: 3px solid var(--brutal-border);
+  box-shadow: var(--shadow-brutal-sm);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.brutal-btn:hover:not(:disabled) {
+  background: var(--brutal-accent-dark);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--brutal-shadow);
+}
+
+.brutal-btn:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--brutal-shadow);
+}
+
+.brutal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.brutal-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--brutal-surface);
+  color: var(--brutal-text);
+  border: 3px solid var(--brutal-border);
+  box-shadow: var(--shadow-brutal-sm);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+.brutal-btn-outline:hover:not(:disabled) {
+  background: var(--brutal-accent-light);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--brutal-shadow);
+}
+
+.brutal-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--brutal-surface-alt);
+  color: var(--brutal-text);
+  border: 2px solid var(--brutal-border);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.brutal-btn-ghost:hover {
+  background: var(--brutal-accent-light);
+}
+
+.brutal-btn-success {
+  background: var(--brutal-success);
+}
+
+.brutal-btn-success:hover:not(:disabled) {
+  background: #1b4332;
+}
+
+.brutal-btn-danger {
+  background: var(--brutal-error);
+}
+
+.brutal-btn-danger:hover:not(:disabled) {
+  background: #7f1d1d;
+}
+
+/* ── Form elements ── */
+.brutal-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brutal-text);
+}
+
+.brutal-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.875rem;
+  background: var(--brutal-surface);
+  color: var(--brutal-text);
+  border: 2px solid var(--brutal-border);
+  outline: none;
+  transition: box-shadow 0.1s ease;
+}
+
+.brutal-input:focus {
+  box-shadow: 3px 3px 0 var(--brutal-accent);
+}
+
+/* ── Links ── */
+.brutal-link {
+  color: var(--brutal-accent-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+.brutal-link:hover {
+  color: var(--brutal-accent);
+}
+
+/* ── Badges ── */
+.brutal-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--brutal-border);
+}
+
+.brutal-badge-warning {
+  background: var(--brutal-warning-bg);
+  color: var(--brutal-warning);
+}
+
+.brutal-badge-success {
+  background: var(--brutal-success-bg);
+  color: var(--brutal-success);
+}
+
+.brutal-badge-error {
+  background: var(--brutal-error-bg);
+  color: var(--brutal-error);
+}
+
+.brutal-badge-info {
+  background: var(--brutal-info-bg);
+  color: var(--brutal-info);
+}
+
+/* ── Alerts ── */
+.brutal-alert {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--brutal-border);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.brutal-alert-error {
+  background: var(--brutal-error-bg);
+  color: var(--brutal-error);
+}
+
+.brutal-alert-success {
+  background: var(--brutal-success-bg);
+  color: var(--brutal-success);
+}
+
+.brutal-alert-info {
+  background: var(--brutal-info-bg);
+  color: var(--brutal-info);
+}
+
+/* ── Tables ── */
+.brutal-table-wrap {
+  overflow-x: auto;
+  background: var(--brutal-surface);
+  border: 3px solid var(--brutal-border);
+  box-shadow: var(--shadow-brutal);
+}
+
+.brutal-table {
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.brutal-table thead {
+  background: var(--brutal-accent-light);
+  border-bottom: 3px solid var(--brutal-border);
+}
+
+.brutal-table th {
+  padding: 0.75rem 1rem;
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brutal-text);
+}
+
+.brutal-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--brutal-border);
+}
+
+.brutal-table tbody tr:hover {
+  background: var(--brutal-accent-light);
+}
+
+/* ── Navbar ── */
+.brutal-nav {
+  background: var(--brutal-surface);
+  border-bottom: 3px solid var(--brutal-border);
+  box-shadow: 0 4px 0 var(--brutal-shadow);
+}
+
+.brutal-nav-link {
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--brutal-muted);
+  border: 2px solid transparent;
+  transition: all 0.1s ease;
+}
+
+.brutal-nav-link:hover {
+  color: var(--brutal-text);
+  background: var(--brutal-accent-light);
+  border-color: var(--brutal-border);
+}
+
+.brutal-nav-link-active {
+  color: var(--brutal-text);
+  background: var(--brutal-accent-light);
+  border: 2px solid var(--brutal-border);
+  box-shadow: 2px 2px 0 var(--brutal-shadow);
+}
+
+/* ── Stat cards ── */
+.brutal-stat {
+  background: var(--brutal-surface);
+  border: 3px solid var(--brutal-border);
+  box-shadow: var(--shadow-brutal-sm);
+  text-align: center;
+  padding: 1rem;
+}
+
+/* ── Swagger overrides ── */
+.swagger-ui {
+  font-family: var(--font-space-mono), monospace !important;
+}
+
+.swagger-ui .topbar {
+  background: var(--brutal-accent) !important;
+  border-bottom: 3px solid var(--brutal-border) !important;
+}
+
+.swagger-ui .btn {
+  border: 2px solid var(--brutal-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 0 var(--brutal-shadow) !important;
+}
+
+.swagger-ui .opblock {
+  border: 2px solid var(--brutal-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 0 var(--brutal-shadow) !important;
+}
+
+.swagger-ui .opblock-tag {
+  border-bottom: 2px solid var(--brutal-border) !important;
+}
+
+.swagger-ui section.models {
+  border: 2px solid var(--brutal-border) !important;
+  border-radius: 0 !important;
+}
