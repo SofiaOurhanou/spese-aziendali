@@ -12,7 +12,7 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "https://spese-aziendali.vercel.app",
         description: "Server di sviluppo",
       },
     ],
