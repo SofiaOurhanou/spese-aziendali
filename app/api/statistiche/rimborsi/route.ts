@@ -1,15 +1,3 @@
-/**
- * Questa route implementa GET /api/statistiche/rimborsi, funzionalità esclusiva del responsabile
- * amministrativo richiesta dalla traccia: un riepilogo aggregato delle richieste per combinazione
- * mese (derivato da dataSpesa) e categoria, con totali richiesto, approvato e liquidato. Dopo auth
- * e controllo isAdmin, applica filtri opzionali su mese, categoriaId e dipendenteId, carica tutte
- * le richieste corrispondenti e le raggruppa in memoria con una Map (chiave mese_categoriaId). Per
- * ogni gruppo incrementa numeroRichieste e somma importi; totaleApprovato include APPROVATA e
- * LIQUIDATA, totaleLiquidato solo LIQUIDATA, distinguendo importi richiesti da quelli effettivamente
- * autorizzati e pagati. Il risultato ordinato per mese e categoria alimenta la pagina statistiche
- * con tabella e card dei totali complessivi.
- */
-
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromRequest, isAdmin } from "@/lib/auth";
@@ -17,28 +5,6 @@ import { isValidMese } from "@/lib/validations";
 import { ok, unauthorized, forbidden, serverError } from "@/lib/api-response";
 import { StatoRichiesta, Prisma } from "@/app/generated/prisma/client";
 
-/**
- * @swagger
- * /api/statistiche/rimborsi:
- *   get:
- *     summary: Riepilogo statistiche per mese e categoria (solo admin)
- *     tags: [Statistiche]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: mese
- *         schema: { type: string, example: "2026-05" }
- *       - in: query
- *         name: categoriaId
- *         schema: { type: integer }
- *       - in: query
- *         name: dipendenteId
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Statistiche aggregate
- */
 export async function GET(request: NextRequest) {
   try {
     const user = getUserFromRequest(request);
@@ -71,7 +37,6 @@ export async function GET(request: NextRequest) {
       include: { categoria: true },
     });
 
-    // Raggruppo per mese + categoria come da traccia
     const mappa = new Map<
       string,
       {

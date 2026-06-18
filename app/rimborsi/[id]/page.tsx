@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /rimborsi/[id] mostra il dettaglio completo di una singola richiesta caricata con
- * GET /api/rimborsi/:id, inclusi dati di valutazione, motivazione rifiuto e liquidazione quando presenti.
- * Il dipendente proprietario di una richiesta IN_ATTESA vede pulsanti Modifica ed Elimina che chiamano
- * rispettivamente navigazione a /modifica e DELETE /api/rimborsi/:id; l'admin su IN_ATTESA può Approvare
- * o Rifiutare (con textarea opzionale per motivazione) tramite PUT sulle route dedicate, e su APPROVATA
- * può Registrare liquidazione. Ogni azione ricarica il dettaglio o reindirizza alla lista dopo delete.
- * I controlli UI su stato e ruolo rispecchiano rimborso-rules; il backend ripete gli stessi controlli
- * per sicurezza. AlertMessage comunica successi ed errori delle operazioni asincrone.
- */
-
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";

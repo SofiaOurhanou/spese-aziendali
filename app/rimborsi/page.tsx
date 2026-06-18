@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /rimborsi è la vista tabellare principale delle richieste di rimborso: per i
- * dipendenti mostra solo le proprie (filtrate lato API), per l'admin tutte con colonna dipendente
- * aggiuntiva. Carica i dati da GET /api/rimborsi con query string costruite dai filtri UI (stato,
- * categoria, mese, dipendente per admin) e le categorie da GET /api/categorie-spesa per popolare le
- * select. La lista dei dipendenti per il filtro admin è derivata dalle richieste già caricate
- * (unici per id) anziché da un endpoint dedicato, scelta pragmatica dato che la traccia non richiede
- * un'anagrafica separata. Ogni riga linka al dettaglio; i badge colorati riflettono lo stato del
- * workflow. Il pulsante "Nuova richiesta" appare solo ai dipendenti come da regole di business.
- */
-
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -48,7 +37,6 @@ export default function RimborsiPage() {
   const [loading, setLoading] = useState(true);
   const [errore, setErrore] = useState("");
 
-  // Filtri
   const [filtroStato, setFiltroStato] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("");
   const [filtroMese, setFiltroMese] = useState("");
@@ -71,7 +59,6 @@ export default function RimborsiPage() {
       const res = await api.get(`/rimborsi?${params.toString()}`);
       setRimborsi(res.data);
 
-      // Estraggo i dipendenti unici dalla lista per il filtro admin
       if (isAdmin()) {
         const unici = new Map<number, { id: number; nome: string; cognome: string }>();
         for (const r of res.data as Rimborso[]) {

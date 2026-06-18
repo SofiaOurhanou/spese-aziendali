@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Questo componente è il form condiviso per creare o modificare una richiesta di rimborso: se riceve
- * rimborsoId e rimborsoIniziale opera in modalità update (PUT), altrimenti in create (POST). Al mount
- * carica le categorie da GET /api/categorie-spesa perché servono per la select obbligatoria. I campi
- * rispecchiano il modello backend (dataSpesa, categoriaId, importo, descrizione, riferimento
- * giustificativo opzionale) con validazione HTML minima; la validazione definitiva è Zod sul server.
- * onSuccess e onCancel sono callback verso le pagine ospiti (/rimborsi/nuova e /modifica) che gestiscono
- * la navigazione dopo salvataggio o annullamento. Gli errori Axios vengono mostrati inline nel form.
- * Estrarlo in un componente evita duplicazione tra pagina nuova e pagina modifica.
- */
-
 import { useState, useEffect, FormEvent } from "react";
 import api from "@/lib/axios-client";
 

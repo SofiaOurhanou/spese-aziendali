@@ -1,13 +1,3 @@
-/**
- * Questo file esegue test di integrazione end-to-end sulle API /api/rimborsi usando token reali ottenuti
- * via login con utenti del seed (Mario dipendente, Giuseppe admin). Copre isolamento dati (dipendente vede
- * solo proprie email), visibilità admin, creazione POST, modifica PUT su IN_ATTESA, approvazione admin,
- * blocco modifica/delete su APPROVATA con 403, e 401 senza token. Simula il ciclo di vita completo di una
- * richiesta di test creata in runtime e poi eliminata da Prisma dopo i controlli di autorizzazione, perché
- * in stato APPROVATA il DELETE via API è correttamente negato. Conferma che le regole in rimborso-rules
- * siano effettivamente applicate nelle route, non solo nei test unitari delle funzioni pure.
- */
-
 import { describe, it, expect, beforeAll } from "vitest";
 import { POST as loginPOST } from "@/app/api/utenti/login/route";
 import { GET as getRimborsi, POST as createRimborso } from "@/app/api/rimborsi/route";
@@ -47,7 +37,6 @@ describe("API Rimborsi", () => {
 
     expect(res.status).toBe(200);
     expect(Array.isArray(data)).toBe(true);
-    // Tutte le richieste devono essere di Mario (dipendenteId del token)
     for (const r of data) {
       expect(r.dipendente.email).toBe("mario.rossi@azienda.it");
     }
@@ -60,7 +49,6 @@ describe("API Rimborsi", () => {
 
     expect(res.status).toBe(200);
     expect(data.length).toBeGreaterThan(0);
-    // Admin dovrebbe vedere richieste di dipendenti diversi
     const emails = new Set(data.map((r: { dipendente: { email: string } }) => r.dipendente.email));
     expect(emails.size).toBeGreaterThanOrEqual(1);
   });
@@ -144,7 +132,6 @@ describe("API Rimborsi", () => {
     const res = await deleteRimborso(req, { params: Promise.resolve({ id: String(rimborsoTestId) }) });
     expect(res.status).toBe(403);
 
-    // Pulizia: elimino come admin revertendo stato... oppure elimino direttamente da prisma
     await prisma.richiestaRimborso.delete({ where: { id: rimborsoTestId } });
   });
 

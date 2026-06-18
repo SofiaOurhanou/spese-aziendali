@@ -1,13 +1,3 @@
-/**
- * Questo file definisce il design system visivo "brutalist" dell'applicazione tramite Tailwind CSS v4:
- * variabili CSS in :root per palette rosa/marrone, bordi spessi, ombre offset e tipografia monospace.
- * @theme inline espone quei colori come utility Tailwind (bg-brutal-bg, text-brutal-muted, ecc.) usate
- * in tutte le pagine e componenti. Le classi componenti (.brutal-card, .brutal-btn, .brutal-table, badge
- * per stati rimborso, alert per errori) centralizzano lo stile invece di ripetere utility in ogni JSX,
- * garantendo coerenza tra dashboard, form auth, tabelle rimborsi e Swagger. @import tailwindcss attiva il
- * nuovo engine Tailwind 4; il look distintivo serve a differenziare visivamente la prova rispetto a UI generiche.
- */
-
 @import "tailwindcss";
 
 :root {
@@ -62,7 +52,6 @@ body {
   font-family: var(--font-space-mono), ui-monospace, monospace;
 }
 
-/* ── Typography ── */
 .brutal-title {
   font-family: var(--font-syne), sans-serif;
   font-weight: 800;
@@ -77,7 +66,6 @@ body {
   color: var(--brutal-text);
 }
 
-/* ── Surfaces ── */
 .brutal-card {
   background: var(--brutal-surface);
   border: 3px solid var(--brutal-border);
@@ -101,7 +89,6 @@ body {
   border: 2px solid var(--brutal-border);
 }
 
-/* ── Buttons ── */
 .brutal-btn {
   display: inline-flex;
   align-items: center;
@@ -194,7 +181,6 @@ body {
   background: #7f1d1d;
 }
 
-/* ── Form elements ── */
 .brutal-label {
   display: block;
   margin-bottom: 0.25rem;
@@ -222,7 +208,6 @@ body {
   box-shadow: 3px 3px 0 var(--brutal-accent);
 }
 
-/* ── Links ── */
 .brutal-link {
   color: var(--brutal-accent-dark);
   font-weight: 700;
@@ -235,7 +220,6 @@ body {
   color: var(--brutal-accent);
 }
 
-/* ── Badges ── */
 .brutal-badge {
   display: inline-block;
   padding: 0.125rem 0.5rem;
@@ -267,7 +251,6 @@ body {
   color: var(--brutal-info);
 }
 
-/* ── Alerts ── */
 .brutal-alert {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
@@ -291,7 +274,6 @@ body {
   color: var(--brutal-info);
 }
 
-/* ── Tables ── */
 .brutal-table-wrap {
   overflow-x: auto;
   background: var(--brutal-surface);
@@ -329,7 +311,6 @@ body {
   background: var(--brutal-accent-light);
 }
 
-/* ── Navbar ── */
 .brutal-nav {
   background: var(--brutal-surface);
   border-bottom: 3px solid var(--brutal-border);
@@ -361,7 +342,6 @@ body {
   box-shadow: 2px 2px 0 var(--brutal-shadow);
 }
 
-/* ── Stat cards ── */
 .brutal-stat {
   background: var(--brutal-surface);
   border: 3px solid var(--brutal-border);
@@ -370,7 +350,6 @@ body {
   padding: 1rem;
 }
 
-/* ── Swagger overrides ── */
 .swagger-ui {
   font-family: var(--font-space-mono), monospace !important;
 }

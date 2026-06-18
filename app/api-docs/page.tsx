@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /api-docs incorpora Swagger UI in modo interattivo per esplorare e provare tutte
- * le API REST dell'applicazione, requisito esplicito della traccia con swagger-jsdoc. SwaggerUI viene
- * importato con next/dynamic e ssr: false perché la libreria accede a window e al DOM e non può
- * essere renderizzata lato server senza errori. Punta a url="/api/swagger" che restituisce lo spec
- * OpenAPI generato dai commenti nelle route. L'intestazione spiega che per le route protette bisogna
- * prima fare login, copiare il JWT e usarlo nel pulsante Authorize di Swagger. I CSS ufficiali di
- * swagger-ui-react vengono importati globalmente per questa pagina.
- */
-
 import dynamic from "next/dynamic";
 import "swagger-ui-react/swagger-ui.css";
 

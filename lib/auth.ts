@@ -1,16 +1,3 @@
-/**
- * Questo file è il cuore dell'autenticazione lato server: gestisce password, token JWT e
- * estrazione dell'utente dalle richieste HTTP. Le password non vengono mai salvate in chiaro
- * nel database (bcrypt con cost factor 10), e dopo login o registrazione si emette un JWT
- * firmato con una chiave segreta che contiene userId, email e ruolo, valido 24 ore. Il
- * frontend salva quel token nel localStorage e lo invia nell'header Authorization come Bearer;
- * qui `getUserFromRequest` lo legge e lo verifica in ogni API protetta. Usare JWT stateless
- * evita sessioni server-side e si adatta bene a Next.js API Routes, mentre `isAdmin` e
- * `isDipendente` incapsulano i controlli sul ruolo richiesti dalla traccia d'esame (dipendente
- * vs responsabile amministrativo). In produzione JWT_SECRET deve stare in .env: il fallback
- * hardcoded esiste solo per lo sviluppo locale.
- */
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextRequest } from "next/server";

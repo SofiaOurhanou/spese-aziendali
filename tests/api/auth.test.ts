@@ -1,13 +1,3 @@
-/**
- * Questo file testa il layer di autenticazione su due livelli: validazione Zod pura (registerSchema e
- * loginSchema con casi validi, password diverse, email malformata, campi solo spazi) e integrazione delle
- * route POST register/login contro il database reale. Verifica che la registrazione crei utente e restituisca
- * token 201, rifiuti email duplicate del seed (mario.rossi), che il login con Password123! funzioni e che
- * password errata dia 401. Usa email univoca con timestamp per il test di creazione e pulisce con delete
- * Prisma dopo, così i test sono ripetibili senza sporcare il dataset. È la rete di sicurezza sul primo
- * punto di ingresso dell'applicazione.
- */
-
 import { describe, it, expect, beforeAll } from "vitest";
 import { registerSchema, loginSchema } from "@/lib/validations";
 import { POST as registerPOST } from "@/app/api/utenti/register/route";
@@ -97,7 +87,6 @@ describe("API autenticazione", () => {
     expect(data.user.email).toBe(emailTest);
     expect(data.user.ruolo).toBe("DIPENDENTE");
 
-    // Pulizia
     await prisma.utente.delete({ where: { email: emailTest } });
   });
 

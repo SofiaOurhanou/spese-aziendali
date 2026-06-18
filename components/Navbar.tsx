@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questo componente renderizza la barra di navigazione superiore presente su tutte le pagine tranne
- * la home, login e register quando l'utente non è autenticato (in quel caso return null per non
- * duplicare i link già in landing e form auth). Per utenti loggati mostra link a Dashboard, Rimborsi
- * (etichetta diversa per admin vs dipendente), Statistiche solo per admin, e API Docs; evidenzia la
- * voce attiva confrontando pathname con usePathname. A destra mostra nome utente, ruolo abbreviato
- * e pulsante Logout che pulisce AuthContext e forza reload verso /login. La logica isAdmin/isDipendente
- * dal context tiene il menu allineato alle stesse regole di visibilità della dashboard.
- */
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";

@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /rimborsi/[id]/modifica permette al dipendente proprietario di aggiornare una
- * richiesta ancora IN_ATTESA, come imposto dalla traccia che vieta modifiche dopo la valutazione
- * dell'admin. Al mount verifica autenticazione e ruolo DIPENDENTE, poi carica il rimborso con GET
- * e controlla lato client che stato sia IN_ATTESA e dipendente.id coincida con l'utente loggato;
- * altrimenti mostra errore senza form. Se tutto ok, passa i dati iniziali a RimborsoForm con
- * rimborsoId impostato: al submit viene eseguito PUT /api/rimborsi/:id. onSuccess torna al dettaglio
- * della stessa richiesta. Questa doppia verifica client+server evita di mostrare un form inutile
- * quando l'admin ha già approvato nel frattempo, pur restando il backend l'autorità finale.
- */
-
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";

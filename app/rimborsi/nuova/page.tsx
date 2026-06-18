@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /rimborsi/nuova ospita il form di creazione di una nuova richiesta di rimborso,
- * accessibile solo ai dipendenti: se un admin o un anonimo ci arriva viene reindirizzato rispettivamente
- * a dashboard o login, allineandosi al vincolo backend che POST /api/rimborsi accetta solo ruolo
- * DIPENDENTE. Delega l'intero form al componente riusabile RimborsoForm senza rimborsoId, che al
- * submit chiama POST /api/rimborsi; onSuccess e onCancel tornano alla lista /rimborsi. Il layout è
- * volutamente minimale (titolo + card) perché tutta la logica di campi, validazione client e caricamento
- * categorie vive in RimborsoForm, condiviso anche con la pagina di modifica per non duplicare UI.
- */
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";

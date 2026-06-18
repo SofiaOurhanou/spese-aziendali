@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /register permette di creare un nuovo account con nome, cognome, email, password,
- * conferma password e scelta del ruolo (DIPENDENTE o RESPONSABILE_AMMINISTRATIVO), esattamente come
- * richiesto dalla traccia che distingue i due profili operativi. Prima del submit controlla lato
- * client che le password coincidano per feedback immediato; register() dell'AuthContext invoca
- * POST /api/utenti/register e, se va a buon fine, salva token e utente in localStorage reindirizzando
- * alla dashboard già autenticati. Gli errori (email duplicata, validazione Zod) arrivano dall'API
- * e vengono mostrati in AlertMessage. Utenti già loggati vengono rediretti come sulle altre pagine auth.
- */
-
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

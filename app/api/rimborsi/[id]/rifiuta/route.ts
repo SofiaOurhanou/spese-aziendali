@@ -1,14 +1,3 @@
-/**
- * Questa route implementa PUT /api/rimborsi/[id]/rifiuta, complementare all'approvazione e anch'essa
- * riservata al responsabile amministrativo su richieste IN_ATTESA. Accetta un body JSON opzionale con
- * campo motivazione (validato da rifiutaSchema) che viene salvato in motivazioneRifiuto per informare
- * il dipendente del perché del diniego, requisito tipico dei processi di rimborso aziendali. Come per
- * l'approvazione, dataValutazione è la data corrente con vincolo >= dataInserimento, e
- * responsabileValutazioneId identifica l'admin che ha rifiutato. Il body vuoto o mancante è tollerato
- * grazie a catch su request.json(), perché la motivazione non è obbligatoria nella traccia. Lo stato
- * finale è RIFIUTATA e la risposta serializzata alimenta la pagina dettaglio con badge e testo rosso.
- */
-
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromRequest, isAdmin } from "@/lib/auth";
@@ -20,22 +9,6 @@ import { StatoRichiesta } from "@/app/generated/prisma/client";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
-/**
- * @swagger
- * /api/rimborsi/{id}/rifiuta:
- *   put:
- *     summary: Rifiuta una richiesta in attesa (solo admin)
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               motivazione: { type: string }
- */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const user = getUserFromRequest(request);

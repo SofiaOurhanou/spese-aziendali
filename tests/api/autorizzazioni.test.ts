@@ -1,13 +1,3 @@
-/**
- * Questo file contiene test unitari sulle funzioni pure in lib/rimborso-rules.ts, senza database né HTTP,
- * verificando ogni combinazione ruolo/stato/proprietario per puoVedere, puoModificare, puoEliminare,
- * puoApprovare, puoRifiutare e puoLiquidare. Usa TokenPayload e richieste mock in memoria per simulare
- * dipendente proprietario, altro dipendente, admin e richieste IN_ATTESA, APPROVATA, RIFIUTATA. Separare
- * questi test dalla integrazione in rimborsi.test.ts permette di individuare subito regressioni nella logica
- * di business quando si modifica una regola, senza dover distinguere se il bug è nella funzione o nella route.
- * È il modo più rapido per documentare con codice i permessi richiesti dalla traccia d'esame.
- */
-
 import { describe, it, expect } from "vitest";
 import {
   puoVedereRichiesta,

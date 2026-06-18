@@ -1,12 +1,3 @@
-/**
- * Questo file testa GET /api/statistiche/rimborsi verificando che solo l'admin del seed acceda con 200
- * e struttura corretta (mese, categoria, conteggi e totali), che il dipendente Mario riceva 403, che il
- * filtro query mese=2026-05 restituisca solo righe di quel mese, e che richieste senza token diano 401.
- * Non crea dati nuovi: si appoggia al seed con richieste distribuite su più mesi e categorie. Conferma
- * il requisito della prova che le statistiche aggregate siano funzionalità esclusiva del responsabile
- * amministrativo e che i filtri opzionali lato API si riflettano nei risultati raggruppati.
- */
-
 import { describe, it, expect, beforeAll } from "vitest";
 import { POST as loginPOST } from "@/app/api/utenti/login/route";
 import { GET as getStatistiche } from "@/app/api/statistiche/rimborsi/route";

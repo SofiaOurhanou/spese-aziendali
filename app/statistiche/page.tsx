@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /statistiche è riservata al responsabile amministrativo e visualizza il riepilogo
- * restituito da GET /api/statistiche/rimborsi, raggruppato per mese e categoria con totali richiesto,
- * approvato e liquidato come richiesto dalla prova. I filtri (mese, categoria, dipendente) costruiscono
- * query string identiche a quelle dell'API; le categorie arrivano da /api/categorie-spesa mentre l'elenco
- * dipendenti è derivato da GET /api/rimborsi per popolare la select senza endpoint utenti dedicato.
- * Sopra la tabella, quattro card mostrano i totali complessivi sommando le righe filtrate. Dipendenti e
- * anonimi vengono reindirizzati; un 403 dal backend sarebbe comunque la rete di sicurezza. AlertMessage
- * gestisce errori di rete o permessi.
- */
-
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axios-client";
@@ -42,7 +31,6 @@ export default function StatistichePage() {
   const [filtroCategoria, setFiltroCategoria] = useState("");
   const [filtroDipendente, setFiltroDipendente] = useState("");
 
-  // Solo admin può accedere
   useEffect(() => {
     if (!isLoading) {
       if (!user) router.push("/login");
@@ -72,7 +60,6 @@ export default function StatistichePage() {
     if (user && isAdmin()) {
       caricaStatistiche();
       api.get("/categorie-spesa").then((res) => setCategorie(res.data));
-      // Carico i dipendenti dalla lista rimborsi per il filtro
       api.get("/rimborsi").then((res) => {
         const unici = new Map<number, { id: number; nome: string; cognome: string }>();
         for (const r of res.data) {

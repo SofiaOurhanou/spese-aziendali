@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questa è la landing page pubblica su /: presenta il titolo dell'applicazione e i link ad accesso,
- * registrazione e documentazione API Swagger. Se l'utente è già autenticato (token in localStorage
- * ripristinato da AuthContext), un useEffect lo reindirizza automaticamente a /dashboard per evitare
- * che un dipendente o admin loggato veda ancora la home da visitatore. È Client Component perché usa
- * useAuth, useRouter e useEffect per quella logica lato browser. La Navbar è nascosta su questa pagina
- * (vedi Navbar.tsx) per un aspetto più pulito alla prima visita; il link a /api-docs resta accessibile
- * anche senza login per chi vuole esplorare le API prima di registrarsi.
- */
-
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";

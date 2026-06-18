@@ -1,14 +1,3 @@
-/**
- * Questo modulo fa da ponte tra il modello Prisma (Date, Decimal, relazioni annidate) e il JSON
- * che consumano frontend e documentazione OpenAPI. Prisma restituisce `importo` come Decimal e le
- * date come oggetti Date non serializzabili direttamente in JSON; qui si convertono in number e
- * stringhe ISO, e si aggiunge `statoLabel` leggibile. `rimborsoInclude` definisce l'include Prisma
- * standard (categoria, dipendente con campi minimi, responsabile valutazione) usato da tutte le
- * query sui rimborsi, così ogni endpoint restituisce la stessa forma dati senza rischiare di
- * dimenticare relazioni utili al dettaglio o alla lista. Separare serializzazione e query tiene
- * le route API focalizzate su autorizzazione e persistenza piuttosto che su mapping manuale.
- */
-
 import { RichiestaRimborso, CategoriaSpesa, Utente } from "@/app/generated/prisma/client";
 import { statiLabel } from "./rimborso-rules";
 
@@ -18,7 +7,6 @@ type RichiestaCompleta = RichiestaRimborso & {
   responsabileValutazione?: Pick<Utente, "id" | "nome" | "cognome"> | null;
 };
 
-// Converte Decimal in number per il JSON
 export function serializeRimborso(r: RichiestaCompleta) {
   return {
     id: r.id,
@@ -52,7 +40,6 @@ export function serializeRimborso(r: RichiestaCompleta) {
   };
 }
 
-// Include usato nelle query Prisma per avere sempre gli stessi dati
 export const rimborsoInclude = {
   categoria: true,
   dipendente: {

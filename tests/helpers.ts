@@ -1,13 +1,3 @@
-/**
- * Questo modulo fornisce createRequest, factory per costruire oggetti NextRequest usati nei test delle
- * API route senza avviare un server HTTP reale. Accetta path relativo (es. /api/rimborsi), metodo,
- * body JSON opzionale e token JWT opzionale che viene tradotto nell'header Authorization Bearer, replicando
- * esattamente ciò che fa axios-client in produzione. I test importano direttamente le funzioni POST/GET
- * esportate dalle route e le invocano con queste richieste mock, permettendo test di integrazione veloci
- * e deterministici contro Prisma e il database seedato. L'URL base localhost:3000 è convenzione interna
- * perché NextRequest richiede un URL assoluto anche se l'host non viene contattato.
- */
-
 import { NextRequest } from "next/server";
 
 export function createRequest(

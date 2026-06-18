@@ -1,14 +1,3 @@
-/**
- * Questa route implementa PUT /api/rimborsi/[id]/liquida, ultimo passo del ciclo di vita di una
- * richiesta: registra che il rimborso approvato è stato effettivamente pagato al dipendente. Solo
- * l'admin può invocarla e solo su richieste in stato APPROVATA (puoLiquidare in rimborso-rules),
- * perché liquidare qualcosa non ancora approvato o già rifiutato non avrebbe senso contabile.
- * dataLiquidazione è impostata a now e deve essere >= dataValutazione, garantendo coerenza temporale
- * del processo inserimento → valutazione → pagamento. Lo stato diventa LIQUIDATA; non si modificano
- * altri campi della valutazione. Questa separazione in tre endpoint distinti (approva/rifiuta/liquida)
- * rende esplicito il workflow a stati finiti richiesto dalla prova pratica.
- */
-
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromRequest, isAdmin } from "@/lib/auth";
@@ -19,15 +8,6 @@ import { StatoRichiesta } from "@/app/generated/prisma/client";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
-/**
- * @swagger
- * /api/rimborsi/{id}/liquida:
- *   put:
- *     summary: Registra liquidazione di una richiesta approvata (solo admin)
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const user = getUserFromRequest(request);

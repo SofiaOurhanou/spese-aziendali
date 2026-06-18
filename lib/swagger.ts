@@ -12,7 +12,7 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: "https://spese-aziendali.vercel.app",
+        url: "https://localhost:3000",
         description: "Server di sviluppo",
       },
     ],
@@ -87,8 +87,7 @@ const options: swaggerJSDoc.Options = {
       { name: "Statistiche", description: "Riepiloghi per admin" },
     ],
   },
-  // Legge i commenti @swagger dai file delle API
-  apis: ["./app/api/**/*.ts"],
+  apis: ["./app/api*.ts"],
 };
 
 export function getSwaggerSpec() {

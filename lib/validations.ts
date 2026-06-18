@@ -1,18 +1,6 @@
-/**
- * Questo file contiene gli schemi Zod che validano l'input di tutte le API lato server, perché
- * non si può fidare ciò che arriva dal browser: i controlli HTML sono aggirabili e la sicurezza
- * deve essere enforced nel backend. Ogni schema rispecchia i campi richiesti dalla traccia
- * (registrazione con conferma password, creazione rimborso con importo positivo, ecc.) e usa
- * `nonVuoto` per rifiutare stringhe di soli spazi, caso esplicitamente citato nella prova.
- * `safeParse` nelle route produce errori strutturati per campo restituiti con badRequest. Gli
- * enum Ruolo e StatoRichiesta sono legati a Prisma per non divergere dal database. `isValidMese`
- * valida il formato YYYY-MM dei filtri per mese su liste e statistiche.
- */
-
 import { z } from "zod";
 import { Ruolo, StatoRichiesta } from "@/app/generated/prisma/client";
 
-// Controlla che una stringa non sia vuota o solo spazi
 const nonVuoto = (campo: string) =>
   z
     .string()
@@ -57,7 +45,6 @@ export const rifiutaSchema = z.object({
 
 export const statiValidi = Object.values(StatoRichiesta);
 
-// Valida formato mese YYYY-MM per i filtri
 export function isValidMese(mese: string): boolean {
   return /^\d{4}-\d{2}$/.test(mese);
 }

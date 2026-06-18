@@ -1,14 +1,3 @@
-/**
- * Questo file gestisce la raccolta e la creazione delle richieste di rimborso su /api/rimborsi.
- * GET elenca le richieste applicando filtri opzionali (stato, categoriaId, mese YYYY-MM, e per
- * l'admin anche dipendenteId): la funzione buildFiltri costruisce il where Prisma rispettando il
- * vincolo che un dipendente vede solo le proprie righe mentre l'admin vede l'intero dataset. POST
- * crea una nuova richiesta solo per utenti con ruolo DIPENDENTE, valida i dati con rimborsoCreateSchema,
- * verifica che la categoria esista, imposta stato IN_ATTESA e dataInserimento automatica, poi
- * restituisce il rimborso serializzato con relazioni. Entrambi gli handler richiedono JWT via
- * getUserFromRequest e usano rimborsoInclude/serializeRimborso per risposte uniformi al frontend.
- */
-
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromRequest, isDipendente } from "@/lib/auth";
@@ -21,12 +10,10 @@ import { serializeRimborso, rimborsoInclude } from "@/lib/rimborso-serializer";
 import { ok, badRequest, unauthorized, forbidden, notFound, serverError } from "@/lib/api-response";
 import { Ruolo, StatoRichiesta, Prisma } from "@/app/generated/prisma/client";
 
-// Costruisce i filtri per la lista rimborsi in base ai query params
 function buildFiltri(request: NextRequest, userId: number, isAdmin: boolean) {
   const params = request.nextUrl.searchParams;
   const where: Prisma.RichiestaRimborsoWhereInput = {};
 
-  // Il dipendente vede solo le proprie richieste
   if (!isAdmin) {
     where.dipendenteId = userId;
   } else {
@@ -57,32 +44,6 @@ function buildFiltri(request: NextRequest, userId: number, isAdmin: boolean) {
   return where;
 }
 
-/**
- * @swagger
- * /api/rimborsi:
- *   get:
- *     summary: Elenco richieste di rimborso con filtri
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: stato
- *         schema: { type: string, enum: [IN_ATTESA, APPROVATA, RIFIUTATA, LIQUIDATA] }
- *       - in: query
- *         name: categoriaId
- *         schema: { type: integer }
- *       - in: query
- *         name: mese
- *         schema: { type: string, example: "2026-05" }
- *       - in: query
- *         name: dipendenteId
- *         schema: { type: integer }
- *         description: Solo per responsabile amministrativo
- *     responses:
- *       200:
- *         description: Lista richieste
- */
 export async function GET(request: NextRequest) {
   try {
     const user = getUserFromRequest(request);
@@ -104,37 +65,11 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/**
- * @swagger
- * /api/rimborsi:
- *   post:
- *     summary: Crea nuova richiesta di rimborso
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [dataSpesa, categoriaId, importo, descrizione]
- *             properties:
- *               dataSpesa: { type: string, format: date }
- *               categoriaId: { type: integer }
- *               importo: { type: number }
- *               descrizione: { type: string }
- *               riferimentoGiustificativo: { type: string }
- *     responses:
- *       201:
- *         description: Richiesta creata
- */
 export async function POST(request: NextRequest) {
   try {
     const user = getUserFromRequest(request);
     if (!user) return unauthorized();
 
-    // Solo i dipendenti possono creare richieste
     if (!isDipendente(user)) {
       return forbidden("Solo i dipendenti possono creare richieste di rimborso");
     }
@@ -147,7 +82,6 @@ export async function POST(request: NextRequest) {
 
     const { dataSpesa, categoriaId, importo, descrizione, riferimentoGiustificativo } = parsed.data;
 
-    // Verifica che la categoria esista
     const categoria = await prisma.categoriaSpesa.findUnique({ where: { id: categoriaId } });
     if (!categoria) {
       return badRequest("Categoria non trovata");

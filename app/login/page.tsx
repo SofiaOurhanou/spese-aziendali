@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questa pagina implementa il form di login su /login: raccoglie email e password, invoca login()
- * dall'AuthContext che a sua volta chiama POST /api/utenti/login via axios-client, e in caso di
- * successo reindirizza a /dashboard. Gli errori dell'API (401 credenziali errate, 400 validazione)
- * vengono mostrati con AlertMessage estraendo message dalla risposta Axios. Se l'utente è già loggato
- * viene mandato alla dashboard senza mostrare il form. La validazione HTML (required, type=email) è
- * solo UX; la sicurezza reale è sul server con loginSchema. Il link a /register completa il flusso
- * onboarding per nuovi utenti della prova d'esame.
- */
-
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

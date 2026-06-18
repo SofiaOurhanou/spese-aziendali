@@ -1,14 +1,3 @@
-/**
- * Questo è il layout radice dell'applicazione Next.js App Router: avvolge ogni pagina con la
- * struttura HTML di base, i font Google (Space Mono per il testo, Syne per i titoli) e gli stili
- * globali. Resta un Server Component perché carica font e metadata lato server senza inviare
- * JavaScript extra al client per queste operazioni. I metadata impostano titolo e descrizione per
- * SEO e tab del browser. Il vero contenuto dell'app passa da Providers, che è Client Component e
- * monta AuthProvider e Navbar: questa separazione rispetta il vincolo che i context React richiedono
- * "use client" mentre layout.tsx può restare server-side. Le classi Tailwind su html/body definiscono
- * sfondo, testo e layout flex column che fa espandere main tra navbar e fondo pagina.
- */
-
 import type { Metadata } from "next";
 import { Space_Mono, Syne } from "next/font/google";
 import "./globals.css";

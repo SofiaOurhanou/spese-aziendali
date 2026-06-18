@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Questa pagina su /dashboard è il hub post-login: saluta l'utente per nome, indica il ruolo attivo
- * e offre card cliccabili verso le funzionalità permesse. È protetta: se non c'è utente in
- * AuthContext dopo il caricamento iniziale, redirect a /login. Il contenuto cambia per ruolo: tutti
- * vedono link a lista rimborsi e API docs; solo i dipendenti vedono "Nuova richiesta"; solo gli admin
- * vedono "Statistiche". Questo pattern evita di mostrare azioni che il backend rifiuterebbe con 403
- * e guida l'utente nel workflow corretto della prova (dipendente inserisce spese, admin valuta e
- * analizza aggregate). Mostra uno stato di caricamento finché AuthContext non ha letto localStorage.
- */
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

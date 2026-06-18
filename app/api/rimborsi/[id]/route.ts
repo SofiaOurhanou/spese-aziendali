@@ -1,14 +1,3 @@
-/**
- * Questa route gestisce le operazioni su una singola richiesta di rimborso identificata da :id
- * in /api/rimborsi/[id]. GET restituisce il dettaglio completo se l'utente può vederla (proprietario
- * dipendente o admin). PUT permette al dipendente proprietario di aggiornare una richiesta solo in
- * stato IN_ATTESA, ri-validando categoria e campi come in creazione. DELETE elimina fisicamente la
- * riga con le stesse regole di modifica. Ogni metodo delega i controlli di autorizzazione a
- * puoVedereRichiesta, puoModificareRichiesta e puoEliminareRichiesta in rimborso-rules, così la
- * logica di business resta centralizzata. Il parametro id arriva come Promise per compatibilità
- * con Next.js 15+ App Router; viene parsato a intero e usato nelle query Prisma.
- */
-
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserFromRequest, isDipendente } from "@/lib/auth";
@@ -19,23 +8,6 @@ import { ok, badRequest, unauthorized, forbidden, notFound, serverError } from "
 
 type RouteParams = { params: Promise<{ id: string }> };
 
-/**
- * @swagger
- * /api/rimborsi/{id}:
- *   get:
- *     summary: Dettaglio richiesta di rimborso
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: integer }
- *     responses:
- *       200:
- *         description: Dettaglio richiesta
- */
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const user = getUserFromRequest(request);
@@ -62,15 +34,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-/**
- * @swagger
- * /api/rimborsi/{id}:
- *   put:
- *     summary: Modifica richiesta (solo IN_ATTESA, solo dipendente proprietario)
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const user = getUserFromRequest(request);
@@ -125,15 +88,6 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-/**
- * @swagger
- * /api/rimborsi/{id}:
- *   delete:
- *     summary: Elimina richiesta (solo IN_ATTESA, solo dipendente proprietario)
- *     tags: [Rimborsi]
- *     security:
- *       - bearerAuth: []
- */
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const user = getUserFromRequest(request);

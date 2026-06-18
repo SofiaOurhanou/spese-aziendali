@@ -1,14 +1,3 @@
-/**
- * Questo script di seed popola il database PostgreSQL con dati di test realistici per sviluppo,
- * demo e suite Vitest che assume utenti e rimborsi già presenti. All'avvio cancella in ordine
- * sicuro (richieste, categorie, utenti) per evitare violazioni di foreign key, poi crea due
- * dipendenti (Mario, Laura), un admin (Giuseppe), cinque categorie di spesa e dieci richieste
- * distribuite su stati diversi (IN_ATTESA, APPROVATA, RIFIUTATA, LIQUIDATA) e mesi (aprile-maggio-
- * giugno 2026) così filtri, statistiche e autorizzazioni sono verificabili manualmente. Tutti gli
- * utenti condividono password Password123! hashata con bcrypt come in produzione. Usa un PrismaClient
- * con adapter pg proprio (non il singleton di lib/prisma) perché gira come script CLI separato da Next.
- */
-
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -68,7 +57,6 @@ async function main() {
   const materiali = await prisma.categoriaSpesa.create({ data: { descrizione: "Materiali ufficio" } });
 
   console.log("Creazione richieste di rimborso...");
-  // Richieste di Mario - vari stati e mesi
   await prisma.richiestaRimborso.createMany({
     data: [
       {
@@ -131,7 +119,6 @@ async function main() {
     ],
   });
 
-  // Richieste di Laura - per testare filtri dipendente e statistiche
   await prisma.richiestaRimborso.createMany({
     data: [
       {
